@@ -1,8 +1,11 @@
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QPushButton, QHBoxLayout
+from PyQt5.QtCore import pyqtSignal
 from db.models import Expense
 from ui.expense_form import ExpenseForm
 
 class ExpenseList(QDialog):
+    expense_signal = pyqtSignal()
+
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Manage Expenses")
@@ -33,7 +36,10 @@ class ExpenseList(QDialog):
     def edit_expense(self, expense):
         self.edit_form = ExpenseForm(expense=expense)
         self.edit_form.exec_()
+        self.expense_signal.emit()
+        self.accept()
     
     def delete_expense(self, expense):
         expense.delete()
-        self.close()
+        self.expense_signal.emit()
+        self.accept()

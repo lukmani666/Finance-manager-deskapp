@@ -1,7 +1,10 @@
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton, QMessageBox
+from PyQt5.QtCore import pyqtSignal
 from db.models import Expense
 
 class ExpenseForm(QDialog):
+    expense_added = pyqtSignal()
+
     def __init__(self, expense=None):
         super().__init__()
 
@@ -73,8 +76,10 @@ class ExpenseForm(QDialog):
         else:
             new_expense = Expense(date, category, amount, description)
             new_expense.save()
+        
+        self.expense_added.emit()
 
-        self.close()
+        self.accept()
     
     def show_error(self, message):
         error = QMessageBox()

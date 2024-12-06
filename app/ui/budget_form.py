@@ -1,8 +1,12 @@
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton, QMessageBox
+from PyQt5.QtCore import pyqtSignal
 from db.models import Budget
 
 class BudgetForm(QDialog):
-    def __init__(self, budget):
+    budget_added = pyqtSignal()
+
+
+    def __init__(self, budget=None):
         super().__init__()
 
         self.setWindowTitle("Edit Budget" if budget else "Set Budget")
@@ -50,7 +54,9 @@ class BudgetForm(QDialog):
             new_budget = Budget(category, budget_limit)
             new_budget.save()
 
-        self.close()
+        self.budget_added.emit()
+
+        self.accept()
     
 
     def show_error(self, message):
