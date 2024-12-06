@@ -1,0 +1,3 @@
+DB_NAME = "finance_manager.db"
+WINDOW_WIDTH = 800
+WINDOW_HEIGHT = 600
